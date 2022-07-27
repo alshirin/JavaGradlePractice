@@ -12,6 +12,7 @@
 
 # Ignore output CSV files
 *.csv
+*.CSV
 
 # Package Files #
 *.jar
