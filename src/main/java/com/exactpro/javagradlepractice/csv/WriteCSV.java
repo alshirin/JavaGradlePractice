@@ -1,10 +1,9 @@
-package com.exactpro.javagradlepractice.CSV;
+package com.exactpro.javagradlepractice.csv;
 
 import com.exactpro.javagradlepractice.parse.ParseRow;
-import com.exactpro.javagradlepractice.structure.EXTRD;
-import com.exactpro.javagradlepractice.structure.FOOTR;
-import com.exactpro.javagradlepractice.structure.HEADR;
-import com.exactpro.javagradlepractice.structure.TRADE;
+import com.exactpro.javagradlepractice.structure.*;
+import com.exactpro.javagradlepractice.structure.RowExtendedTrade;
+import com.exactpro.javagradlepractice.structure.RowTrade;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 
@@ -15,17 +14,17 @@ import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.LinkedList;
 
-public class CSV {
-    public static void writeHeaderFooterToCSV(LinkedList<HEADR> headerList, LinkedList<FOOTR> footerList) {
+public class WriteCSV {
+    public static void writeHeaderFooterToCSV(LinkedList<RowHeader> headerList, LinkedList<RowFooter> footerList) {
         //CSV File ro write data
         String outputFile = System.getProperty("user.dir") + "/header_and_footer.csv";
         try (BufferedWriter writer = Files.newBufferedWriter(Paths.get(outputFile));
              CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT);)
-//                     .withHeader(HEADR.Header.class));)
+//                     .withHeader(RowHeader.Header.class));)
         {
 
 
-            for (HEADR rows : headerList)
+            for (RowHeader rows : headerList)
             {
                 csvPrinter.print(rows.getTag());
                 csvPrinter.print(rows.getVersion());
@@ -34,7 +33,7 @@ public class CSV {
                 csvPrinter.println();
             }
 
-            for (FOOTR rows : footerList)
+            for (RowFooter rows : footerList)
             {
                 csvPrinter.print(rows.getTag());
                 csvPrinter.print(rows.getNumberOfTrades());
@@ -49,7 +48,7 @@ public class CSV {
         }
     }
 
-    public static void writeTradeExtTradeToCSV(LinkedList<TRADE> tradesList, LinkedList<EXTRD> extendedTradesList) {
+    public static void writeTradeExtTradeToCSV(LinkedList<RowTrade> tradesList, LinkedList<RowExtendedTrade> extendedTradesList) {
         // Sort LinkedList descending by Quantity
         tradesList = ParseRow.sortTrades(tradesList);
         extendedTradesList = ParseRow.sortExTrades(extendedTradesList);
@@ -57,9 +56,9 @@ public class CSV {
         String outputFile = System.getProperty("user.dir") + "/trades.csv";
         try (BufferedWriter writer = Files.newBufferedWriter(Paths.get(outputFile));
              CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT
-                     .withHeader(EXTRD.Header.class));)
+                     .withHeader(RowExtendedTrade.Header.class));)
         {
-            for (TRADE rows : tradesList)
+            for (RowTrade rows : tradesList)
             {
                 csvPrinter.print(rows.getTag());
                 csvPrinter.print("");
@@ -75,7 +74,7 @@ public class CSV {
                 csvPrinter.println();
             }
 
-            for (EXTRD rows : extendedTradesList)
+            for (RowExtendedTrade rows : extendedTradesList)
             {
                 csvPrinter.print(rows.getTag());
                 csvPrinter.print(rows.getVersion());

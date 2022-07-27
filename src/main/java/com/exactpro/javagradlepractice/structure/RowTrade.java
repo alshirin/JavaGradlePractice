@@ -2,7 +2,7 @@ package com.exactpro.javagradlepractice.structure;
 
 import java.util.Date;
 
-public class TRADE {
+public class RowTrade {
     public enum Header
     {
         tag(),

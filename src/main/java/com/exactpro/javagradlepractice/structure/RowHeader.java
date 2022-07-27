@@ -2,7 +2,7 @@ package com.exactpro.javagradlepractice.structure;
 
 import java.util.Date;
 
-public class HEADR {
+public class RowHeader {
     public enum Header
     {
         Tag(),

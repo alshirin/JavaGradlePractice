@@ -1,6 +1,6 @@
 package com.exactpro.javagradlepractice.structure;
 
-public class EXTRD extends TRADE {
+public class RowExtendedTrade extends RowTrade {
 
     public enum Header
     {

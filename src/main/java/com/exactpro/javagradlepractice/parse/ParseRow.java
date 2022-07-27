@@ -1,7 +1,7 @@
 package com.exactpro.javagradlepractice.parse;
 
-import com.exactpro.javagradlepractice.structure.EXTRD;
-import com.exactpro.javagradlepractice.structure.TRADE;
+import com.exactpro.javagradlepractice.structure.RowExtendedTrade;
+import com.exactpro.javagradlepractice.structure.RowTrade;
 
 import java.util.*;
 import java.util.regex.Matcher;
@@ -9,39 +9,39 @@ import java.util.regex.Pattern;
 
 public class ParseRow {
 
-    public enum Tag {
-        HEADR,
-        TRADE,
-        EXTRD,
-        FOOTR,
-        UNRECOGNIZED
-
-    }
+//    public enum Tag {
+//        RowHeader,
+//        RowTrade,
+//        RowExtendedTrade,
+//        RowFooter,
+//        UNRECOGNIZED
+//
+//    }
 
     public static boolean isHeader(String row) {
-        return (row.substring(0, 5).equals("HEADR"));
+        return (row.startsWith("HEADR"));
     }
 
     public static boolean isFooter(String row) {
-        return (row.substring(0, 5).equals("FOOTR"));
+        return (row.startsWith("FOOTR"));
     }
 
     public static boolean isTrade(String row) {
-        return (row.substring(0, 5).equals("TRADE"));
+        return (row.startsWith("TRADE"));
     }
 
     public static boolean isExTrade(String row) {
-        return (row.substring(0, 5).equals("EXTRD"));
+        return (row.startsWith("EXTRD"));
     }
 
     public static LinkedList<String> parseHeader(String row) {
         /*    parse HEADER:
 
-                regex = "^(HEADR)(0004|0005)(\d{4}[01]\d[0-3]\d[0-2]\d[0-5]\d[0-5]\d\d{3})(\{\d+\})?(.*?)$";
+                regex = "^(RowHeader)(0004|0005)(\d{4}[01]\d[0-3]\d[0-2]\d[0-5]\d[0-5]\d\d{3})(\{\d+\})?(.*?)$";
                 row = "HEADR000521910120093025001{45}Have you watched C-beams glitter in the dark?";
 
               RegExp explaining:
-                HEADR = (HEADR)
+                RowHeader = (RowHeader)
                 0005 = (0004|0005)
                 21910120093025001 = (\d{4}[01]\d[0-3]\d[0-2]\d[0-5]\d[0-5]\d\d{3})
                 {45}Have you watched C-beams glitter in the dark? = (\{\d+\})?(.*?)
@@ -71,7 +71,7 @@ public class ParseRow {
                     }
                     break;
                 default:
-                    System.out.println("Unsupported version value: "+ matcher.group(2));
+                    System.out.println("Unsupported version value: " + matcher.group(2));
                     break;
 
             }
@@ -82,13 +82,13 @@ public class ParseRow {
     }
 
     public static LinkedList<String> parseFooter(String row) {
-        /*  parse FOOTR:
+        /*  parse RowFooter:
 
-                regex = "^(FOOTR)(\d{10})(\d{10})$";
+                regex = "^(RowFooter)(\d{10})(\d{10})$";
                 row = "FOOTR00000000060000000655";
 
             RegExp explaining:
-                FOOTR = (FOOTR)
+                RowFooter = (RowFooter)
                 0000000006 = (\d{10})
                 0000000655 = (\d{10})
          */
@@ -102,19 +102,18 @@ public class ParseRow {
             valuesList.add(matcher.group(2));
             valuesList.addLast(matcher.group(3));
             // TODO: add checksum verification for groups 2 & 3. Maybe outside of this method
-
         }
         return valuesList;
     }
 
     public static LinkedList<String> parseTrade(String row) {
-        /*  parse TRADE:
+        /*  parse RowTrade:
 
-                regex = "^(TRADE)(\d{4}[01]\d[0-3]\d[0-2]\d[0-5]\d[0-5]\d\d{3})(B|S)([A-Z0-9]{12})([+-]\d{14})(\+\d{9})([A-Za-z0-9_]{4})([A-Za-z0-9_]{4})(.*?)$";
+                regex = "^(RowTrade)(\d{4}[01]\d[0-3]\d[0-2]\d[0-5]\d[0-5]\d\d{3})(B|S)([A-Z0-9]{12})([+-]\d{14})(\+\d{9})([A-Za-z0-9_]{4})([A-Za-z0-9_]{4})(.*?)$";
                 row = "TRADE21910120084505640BOCP0ED209MK1+00000000000000+000000010WEYU_OCP";
 
             RegExp explaining:
-                TRADE = (TRADE)
+                RowTrade = (RowTrade)
                 21910120084505640 = (\\d{4}[01]\\d[0-3]\\d[0-2]\\d[0-5]\\d[0-5]\\d\\d{3})
                 B = (B|S)
                 OCP0ED209MK1 = ([A-Z0-9]{12})
@@ -145,17 +144,17 @@ public class ParseRow {
                 valuesList.addLast(matcher.group(8));
             }
         }
-    return valuesList;
+        return valuesList;
     }
 
     public static LinkedList<String> parseExtTrade(String row) {
         /*  parse ExtTrade:
 
-                regex = "^(EXTRD)(0001)(\d{4}[01]\d[0-3]\d[0-2]\d[0-5]\d[0-5]\d\d{3})(BUY_|SELL)([A-Z0-9]{12})([+-]\d{14})(\+\d{9})([A-Za-z0-9_]{4})([A-Za-z0-9_]{4})([A-Z0-9|{}]+)$";
+                regex = "^(RowExtendedTrade)(0001)(\d{4}[01]\d[0-3]\d[0-2]\d[0-5]\d[0-5]\d\d{3})(BUY_|SELL)([A-Z0-9]{12})([+-]\d{14})(\+\d{9})([A-Za-z0-9_]{4})([A-Za-z0-9_]{4})([A-Z0-9|{}]+)$";
                 row = "EXTRD000121910120090000001BUY_UMB00BOWTNMS+00000000055001+000000001_OCPUmbC{RE3{PSX|PC|DC|GC}RE3R{PS4|PS5|XBX1|XBXS|XBXS|PC}}";
 
             RegExp explaining:
-                EXTRD = (EXTRD)
+                RowExtendedTrade = (RowExtendedTrade)
                 0001 = (0001)
                 21910120090000001 = (\d{4}[01]\d[0-3]\d[0-2]\d[0-5]\d[0-5]\d\d{3})
                 BUY_ = (BUY_|SELL)
@@ -193,12 +192,23 @@ public class ParseRow {
     }
 
     public static String detectType(String row) {
-        return row.substring(0, 5).equals("HEADR") ? "HEADR" :
-               row.substring(0, 5).equals("TRADE") ? "TRADE" :
-               row.substring(0, 5).equals("EXTRD") ? "EXTRD" :
-               row.substring(0, 5).equals("FOOTR") ? "FOOTR" :
+        return row.substring(0, 5).equals("HEADR") ? "RowHeader" :
+               row.substring(0, 5).equals("TRADE") ? "RowTrade" :
+               row.substring(0, 5).equals("EXTRD") ? "RowExtendedTrade" :
+               row.substring(0, 5).equals("FOOTR") ? "RowFooter" :
                "UNRECOGNIZED";
     }
+//    public static String detectType(String row) {
+//        String result;
+//        switch (row.substring(0,5)) {
+//            case "RowHeader" : result = "RowHeader"; break;
+//            case "RowTrade" : result = "RowTrade"; break;
+//            case "RowExtendedTrade" : result = "RowExtendedTrade"; break;
+//            case "RowFooter" : result = "RowFooter"; break;
+//            default      : result = "UNRECOGNIZED"; break;
+//        }
+//        return result;
+//    }
 
     public static String parseNestedStructure(String row) {
         int braketsCounter = 0;
@@ -269,23 +279,23 @@ public class ParseRow {
 //        return result;
 //    }
 
-    public static LinkedList<TRADE> sortTrades(LinkedList<TRADE> tradeList) {
-        Collections.sort(tradeList, new Comparator<TRADE>() {
+    public static LinkedList<RowTrade> sortTrades(LinkedList<RowTrade> rowTradeList) {
+        Collections.sort(rowTradeList, new Comparator<RowTrade>() {
 
             @Override
-            public int compare(TRADE t1, TRADE t2) {
+            public int compare(RowTrade t1, RowTrade t2) {
                 Double val2 = t2.getQuantity()*t2.getPrice();
                 Double val1 = t1.getQuantity()*t1.getPrice();
                 return val2.compareTo(val1);
             }
         });
-        return  tradeList;
+        return rowTradeList;
     }
-    public static LinkedList<EXTRD> sortExTrades(LinkedList<EXTRD> extradeList) {
-        Collections.sort(extradeList, new Comparator<EXTRD>() {
+    public static LinkedList<RowExtendedTrade> sortExTrades(LinkedList<RowExtendedTrade> extradeList) {
+        Collections.sort(extradeList, new Comparator<RowExtendedTrade>() {
 
             @Override
-            public int compare(EXTRD t1, EXTRD t2) {
+            public int compare(RowExtendedTrade t1, RowExtendedTrade t2) {
                 Double val2 = t2.getQuantity()*t2.getPrice();
                 Double val1 = t1.getQuantity()*t1.getPrice();
                 return val2.compareTo(val1);

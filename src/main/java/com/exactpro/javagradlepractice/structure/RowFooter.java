@@ -1,6 +1,6 @@
 package com.exactpro.javagradlepractice.structure;
 
-public class FOOTR {
+public class RowFooter {
 
     String tag;
     int numberOfTrades;
