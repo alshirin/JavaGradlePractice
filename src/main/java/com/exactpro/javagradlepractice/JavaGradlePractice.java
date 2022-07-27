@@ -28,8 +28,6 @@ public class JavaGradlePractice {
         LinkedList<RowExtendedTrade> extendedTradesList = new LinkedList<>();
         LinkedList<RowFooter> footerList = new LinkedList<>();
 
-        String line;
-
         // Check if file were provided
         if (args.length > 0) {
             System.out.println("Opening file : " + args[0]);
@@ -42,7 +40,7 @@ public class JavaGradlePractice {
         try {
             FileReader fileReader = new FileReader(file);
             BufferedReader reader = new BufferedReader(fileReader);
-            line = reader.readLine();
+            String line = reader.readLine();
             int counter = 1;
             //parse line one by one and store them into separate linkedLists
             while (line != null) {
