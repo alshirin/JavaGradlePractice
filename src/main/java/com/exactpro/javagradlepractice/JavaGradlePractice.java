@@ -19,8 +19,12 @@ public class JavaGradlePractice {
 
 
     public static void main(String[] args) throws ParseException {
+        if (args.length > 0) {
+            System.out.println("Opening file : " + args[0]);
+        } else {
+            throw new RuntimeException("Now files were provided, please check input arguments");
+        }
 
-        System.out.println("Opening file : " + args[0]);
 
         HashMap<Integer, String> rawData = new HashMap<>();
         HashMap<Integer, LinkedList<String> > parsedData = new HashMap<>();
