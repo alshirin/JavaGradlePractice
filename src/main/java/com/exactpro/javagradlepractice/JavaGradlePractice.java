@@ -32,7 +32,9 @@ public class JavaGradlePractice {
         if (args.length > 0) {
             System.out.println("Opening file : " + args[0]);
         } else {
-            throw new RuntimeException("No files were provided, please check input arguments");
+            System.out.println("No files were provided, please check input arguments");
+            System.exit(1);
+//            throw new RuntimeException("No files were provided, please check input arguments");
         }
 
         //Open file for reading
@@ -50,9 +52,7 @@ public class JavaGradlePractice {
                         case "RowFooter": footerList.add(storeFooter(counter, line)); break;
                         case "RowTrade": tradesList.add(storeTrade(counter, line)); break;
                         case "RowExtendedTrade": extendedTradesList.add(storeExTrade(counter, line)); break;
-                        default:
-                            System.out.println("Unrecognized row: \n" + "#" + counter + "    "+"\"" + line + "\"");
-                            break;
+                        default: System.out.println("Unrecognized row: \n" + "#" + counter + "    "+"\"" + line + "\""); break;
                     }
                     rawData.put(counter, line);
                     counter++;
@@ -60,9 +60,14 @@ public class JavaGradlePractice {
                 line = reader.readLine();
             }
         } catch (FileNotFoundException ex) {
-            throw new RuntimeException("Provided file were not found. Please check file name or file path" + Arrays.toString(ex.getStackTrace()));
+//            System.out.println("Provided file were not found. Please check file name or file path \n" +ex);
+            System.out.println(ex);
+            System.exit(1);
+//            throw new RuntimeException("Provided file were not found. Please check file name or file path" + Arrays.toString(ex.getStackTrace()));
         } catch (IOException ex) {
-            throw new RuntimeException("Reading file failed" + Arrays.toString(ex.getStackTrace()));
+            System.out.println("Reading file failed" + Arrays.toString(ex.getStackTrace()));
+            System.exit(1);
+//            throw new RuntimeException("Reading file failed" + Arrays.toString(ex.getStackTrace()));
         }
 
 

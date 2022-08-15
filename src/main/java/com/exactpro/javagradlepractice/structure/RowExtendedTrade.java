@@ -4,17 +4,17 @@ public class RowExtendedTrade extends RowTrade {
 
     public enum Header
     {
-        tag(),
-        version(),
-        dateTime(),
-        direction(),
-        itemID(),
-        price(),
-        quantity(),
-        buyer(),
-        seller(),
-        comment(),
-        nestedTags()
+        Tag(),
+        Version(),
+        DateTime(),
+        Direction(),
+        ItemID(),
+        Price(),
+        Quantity(),
+        Buyer(),
+        Seller(),
+        Comment(),
+        NestedTags()
     }
     String version;
     String nestedTags;

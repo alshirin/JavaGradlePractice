@@ -192,10 +192,10 @@ public class ParseRow {
     }
 
     public static String detectType(String row) {
-        return row.substring(0, 5).equals("HEADR") ? "RowHeader" :
-               row.substring(0, 5).equals("TRADE") ? "RowTrade" :
-               row.substring(0, 5).equals("EXTRD") ? "RowExtendedTrade" :
-               row.substring(0, 5).equals("FOOTR") ? "RowFooter" :
+        return row.startsWith("HEADR") ? "RowHeader" :
+               row.startsWith("TRADE") ? "RowTrade" :
+               row.startsWith("EXTRD") ? "RowExtendedTrade" :
+               row.startsWith("FOOTR") ? "RowFooter" :
                "UNRECOGNIZED";
     }
 //    public static String detectType(String row) {

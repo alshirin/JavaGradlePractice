@@ -5,15 +5,15 @@ import java.util.Date;
 public class RowTrade {
     public enum Header
     {
-        tag(),
-        dateTime(),
-        direction(),
-        itemID(),
-        price(),
-        quantity(),
-        buyer(),
-        seller(),
-        comment()
+        Tag(),
+        DateTime(),
+        Direction(),
+        ItemID(),
+        Price(),
+        Quantity(),
+        Buyer(),
+        Seller(),
+        Comment()
     }
     String tag;
     Date dateTime;
